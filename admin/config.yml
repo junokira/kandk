@@ -2,30 +2,30 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "uploads"          # where images get uploaded in the repo
-public_folder: "/uploads"        # how the site references them
-
-publish_mode: editorial_workflow # optional, gives “Draft/Review/Publish” states
+media_folder: "static/uploads"
+public_folder: "/static/uploads"
 
 collections:
-  - name: "posts"
-    label: "Posts"
-    label_singular: "Post"
-    format: "json"
-    delete: true
+  - label: "Posts"
+    name: "posts"
     files:
-      - file: "posts.json"
-        label: "All Posts"
+      - label: "Posts JSON"
         name: "posts_json"
+        file: "posts.json"
+        format: "json"           # ensures JSON read/write
+        editor:
+          preview: false
         fields:
           - label: "Posts"
             name: "posts"
             widget: "list"
+            collapsed: true
+            summary: "{{fields.title}} — {{fields.date}}"
             fields:
-              - {label: "Title", name: "title", widget: "string"}
-              - {label: "Date", name: "date", widget: "datetime"}
-              - {label: "Category", name: "category", widget: "select", options: ["music","fashion","events","discourse"]}
-              - {label: "Cover", name: "cover", widget: "image", required: false}
-              - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
-              - {label: "Body (HTML ok)", name: "body", widget: "text", required: false}
-              - {label: "URL (optional – external full post)", name: "url", widget: "string", required: false}
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "Category", name: "category", widget: "select", options: ["music","fashion","events","discourse"] }
+              - { label: "Cover URL", name: "cover", widget: "string", required: false }
+              - { label: "Excerpt", name: "excerpt", widget: "text" }
+              - { label: "Body (HTML or Markdown)", name: "body", widget: "markdown" }
+              - { label: "URL (optional, external)", name: "url", widget: "string", required: false }
