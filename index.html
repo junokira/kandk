@@ -522,12 +522,10 @@
             try {
                 const res = await fetch('/posts.json', { cache: 'no-store' });
                 if (!res.ok) throw new Error('Failed to fetch /posts.json');
-                const cms = await res.json();
+                const raw = await res.json();
+                const cmsPosts = Array.isArray(raw) ? raw : raw.posts || [];
                 
-                // Handle both an array and the { "posts": [...] } object format from Netlify CMS
-                const list = Array.isArray(cms) ? cms : (cms.posts || []);
-
-                const cmsAsCards = list.map(p => ({
+                const cmsAsCards = cmsPosts.map(p => ({
                     title: p.title,
                     date: p.date,
                     category: (p.category || '').toLowerCase(),
