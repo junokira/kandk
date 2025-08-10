@@ -1,0 +1,16 @@
+[build]
+  publish = "."   # your index.html is at repo root
+
+# cache your JSON for a short time so updates appear quickly
+[[headers]]
+  for = "/posts.json"
+  [headers.values]
+  Cache-Control = "public, max-age=60"
+
+# security/SEO-ish headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+  X-Frame-Options = "SAMEORIGIN"
+  X-Content-Type-Options = "nosniff"
+  Referrer-Policy = "strict-origin-when-cross-origin"
