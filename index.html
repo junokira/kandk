@@ -165,6 +165,11 @@
     </footer>
 
     <script>
+        // If Netlify Identity sends an invite/recovery token, forward it to /admin/
+        if (/^#(invite_token|recovery_token)=/.test(window.location.hash)) {
+            window.location.replace('/admin/' + window.location.hash);
+        }
+
         // Store the HTML for each page in JavaScript variables
         const pages = {
             'home': ``,
@@ -684,7 +689,15 @@
 
         // Function to handle hash-based routing
         function routeFromHash() {
-            const page = (location.hash.replace('#/','') || 'home');
+            const hash = window.location.hash;
+
+            // Only treat hashes that start with "#/" as internal pages
+            if (!hash || !hash.startsWith('#/')) {
+                showPage('home');
+                return;
+            }
+
+            const page = hash.slice(2) || 'home';
             showPage(page);
         }
         
