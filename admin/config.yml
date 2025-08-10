@@ -2,30 +2,30 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "uploads"
-public_folder: "/uploads"
+media_folder: "uploads"          # where images get uploaded in the repo
+public_folder: "/uploads"        # how the site references them
 
-site_url: https://<your-netlify-site>.netlify.app
+publish_mode: editorial_workflow # optional, gives “Draft/Review/Publish” states
 
-# A single JSON file with a list of posts
 collections:
-  - label: "Blog"
-    name: "blog"
+  - name: "posts"
+    label: "Posts"
+    label_singular: "Post"
+    format: "json"
+    delete: true
     files:
-      - label: "Posts"
-        name: "posts"
-        file: "posts.json"
-        format: "json"
+      - file: "posts.json"
+        label: "All Posts"
+        name: "posts_json"
         fields:
           - label: "Posts"
             name: "posts"
             widget: "list"
-            collapsed: true
             fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Category", name: "category", widget: "select", options: ["fashion","music","events","discourse"] }
-              - { label: "Cover Image URL", name: "cover", widget: "string", required: false }
-              - { label: "Excerpt", name: "excerpt", widget: "text" }
-              - { label: "Body (HTML)", name: "body", widget: "markdown" }
-              - { label: "External URL (optional)", name: "url", widget: "string", required: false }
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime"}
+              - {label: "Category", name: "category", widget: "select", options: ["music","fashion","events","discourse"]}
+              - {label: "Cover", name: "cover", widget: "image", required: false}
+              - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+              - {label: "Body (HTML ok)", name: "body", widget: "text", required: false}
+              - {label: "URL (optional – external full post)", name: "url", widget: "string", required: false}
