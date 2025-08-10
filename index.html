@@ -523,13 +523,17 @@
                 const res = await fetch('/posts.json', { cache: 'no-store' });
                 if (!res.ok) throw new Error('Failed to fetch /posts.json');
                 const cms = await res.json();
-                const cmsAsCards = cms.map(p => ({
+                
+                // Handle both an array and the { "posts": [...] } object format from Netlify CMS
+                const list = Array.isArray(cms) ? cms : (cms.posts || []);
+
+                const cmsAsCards = list.map(p => ({
                     title: p.title,
                     date: p.date,
                     category: (p.category || '').toLowerCase(),
                     imageUrl: p.cover || '',
-                    snippet: p.excerpt || '', // added snippet for card display
-                    fullContent: p.body || p.excerpt || '', // try to get full body if available
+                    snippet: p.excerpt || '',
+                    fullContent: p.body || p.excerpt || '',
                     url: p.url
                 }));
                 return [...cmsAsCards, ...existingPosts].sort(
@@ -573,17 +577,19 @@
                         <p class="text-base">${post.snippet}</p>
                     </div>
                 `;
-                const postElement = document.createElement('div');
-                postElement.innerHTML = postCard;
-
-                // Click handler to check for a URL before showing the full post.
+                
+                // Fix: use a temporary wrapper to get the firstElementChild instead of firstChild
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = postCard.trim(); // strip leading newline
+                const cardEl = wrapper.firstElementChild; // the actual <div class="blog-post-card">
+                
                 if (post.url) {
-                    postElement.addEventListener('click', () => window.location.href = post.url);
+                    cardEl.addEventListener('click', () => (window.location.href = post.url));
                 } else {
-                    postElement.addEventListener('click', () => showFullPost(post));
+                    cardEl.addEventListener('click', () => showFullPost(post));
                 }
 
-                container.appendChild(postElement.firstChild);
+                container.appendChild(cardEl);
             });
         }
         
@@ -632,32 +638,32 @@
                     </div>
                 </div>
             `;
-            // Remove the 'homepage' and 'no-scroll' classes when viewing a blog post
+            // Remove the 'homepage' and 'no-scroll' classes when viewing a blog post.
             document.body.classList.remove('homepage', 'no-scroll');
             // Hide navigation menu on mobile after a link is clicked.
             document.getElementById('main-nav').classList.add('hidden');
             mainContent.classList.remove('hidden');
-            // Scroll to the top of the page smoothly
+            // Scroll to the top of the page smoothly.
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Main function to switch between pages
         function showPage(pageId) {
             const mainContent = document.getElementById('main-content');
-            // Make sure the nav is always visible when switching pages
+            // Make sure the nav is always visible when switching pages.
             document.getElementById('main-nav').classList.remove('hidden');
 
-            // Revert body classes for non-homepage views
+            // Revert body classes for non-homepage views.
             document.body.classList.remove('homepage', 'no-scroll');
             
             if (pageId === 'home') {
-                // Restore homepage classes
+                // Restore homepage classes.
                 document.body.classList.add('homepage', 'no-scroll');
                 mainContent.classList.add('hidden');
             } else {
                 mainContent.classList.remove('hidden');
-                // Blog page now loads posts asynchronously
-                // Inject the HTML first, then fetch posts
+                // Blog page now loads posts asynchronously.
+                // Inject the HTML first, then fetch posts.
                 if (pageId === 'blog') {
                     (async () => {
                         mainContent.innerHTML = pages['blog'];
