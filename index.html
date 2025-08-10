@@ -1,0 +1,692 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Kwality & Klarity</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.">
+    <meta name="keywords" content="Kwality & Klarity, quality, clarity, business, services, newsletter, updates, music, fashion, pop culture, FAQ, frequently asked questions, digital publication">
+    <link rel="canonical" href="https://www.kwalityandklarity.com/"> <!-- Replace with your actual domain -->
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:title" content="Kwality & Klarity">
+    <meta property="og:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.">
+    <meta property="og:image" content="https://i.ibb.co/Fqd8fPfS/k-k-png.png"> <!-- Use your main logo image URL -->
+    <meta property="og:url" content="https://www.kwalityandklarity.com/"> <!-- Replace with your actual domain -->
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@KwalityKlarity"> <!-- Replace with your Twitter handle if applicable -->
+    <meta name="twitter:title" content="Kwality & Klarity">
+    <meta name="twitter:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.">
+    <meta name="twitter:image" content="https://i.ibb.co/Fqd8fPfS/k-k-png.png"> <!-- Use your main logo image URL -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.ibb.co/Jj74RR2Z/IMG-9717.png" type="image/png"> <!-- Use your small logo or a dedicated favicon -->
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        /* Using a custom font for a retro/tech aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        body {
+            font-family: 'VT323', monospace;
+            min-height: 100vh;
+        }
+
+        /* Utility class to disable scrolling on the body */
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        /* Class to center the main content area vertically */
+        .flex-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* New class for the homepage layout */
+        .homepage-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        /* Footer styling from user's provided code */
+        footer {
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .footer-email {
+            margin-bottom: 0.6rem;
+        }
+
+        .social-icons {
+            margin: 0 12px;
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.5s;
+        }
+
+        .social-icons svg,
+        .social-icons img {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+            transition: fill 0.5s;
+        }
+        
+        /* Updated styling for the homepage on mobile */
+        @media (max-width: 768px) {
+            body.homepage .home-page-mobile-footer {
+                position: relative;
+            }
+            body.homepage {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 100vh;
+                padding-bottom: 90px; /* Increased padding to give the footer more space */
+            }
+            body.homepage #main-nav {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-black min-h-screen homepage-layout no-scroll homepage">
+
+    <!-- Header Section -->
+    <div class="flex justify-center p-4">
+        <!-- Logo is now a proper hash link for deep-linking -->
+        <a href="#/home" class="cursor-pointer" onclick="event.preventDefault(); showPage('home')">
+            <!-- Increased logo size on medium and larger screens -->
+            <img alt="Black globe icon with star on top right" class="w-32 h-32 md:w-48 md:h-48" height="128" src="https://i.ibb.co/mKbxmzd/K-K-black.webp" width="128"/>
+        </a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav id="main-nav" class="flex flex-col items-center md:flex-row md:justify-center space-y-8 md:space-y-0 md:space-x-16 max-w-full px-4 text-3xl md:text-4xl lg:text-5xl leading-[36px] z-10">
+        <!-- The nav items are now proper hash links for better accessibility and SEO -->
+        <a href="#/blog" class="whitespace-nowrap cursor-pointer hover:underline text-center" onclick="event.preventDefault(); showPage('blog')">
+            BLOG
+        </a>
+        <a href="#/podcast" class="whitespace-nowrap cursor-pointer hover:underline text-center" onclick="event.preventDefault(); showPage('podcast')">
+            PODCAST
+        </a>
+        <a href="#/prospect-form" class="whitespace-nowrap cursor-pointer hover:underline text-center" onclick="event.preventDefault(); showPage('prospect-form')">
+            PROSPECT FORM
+        </a>
+        <a href="#/about" class="whitespace-nowrap cursor-pointer hover:underline text-center" onclick="event.preventDefault(); showPage('about')">
+            ABOUT
+        </a>
+    </nav>
+    
+    <!-- Main content area where pages will be displayed -->
+    <div id="main-content" class="flex-grow p-8 sm:p-16 flex justify-center hidden">
+        <!-- Content will be injected here by JavaScript -->
+    </div>
+
+    <!-- Footer with social media icons from user's provided code -->
+    <footer class="mt-16 text-black home-page-mobile-footer">
+        <div class="footer-email">
+            <a href="mailto:info@kwalityandklarity.com" style="color: inherit; text-decoration: none;">
+                info@kwalityandklarity.com
+            </a>
+        </div>
+        <div class="social-icons">
+            <!-- Added rel="noopener noreferrer" for security on external links -->
+            <a href="https://www.instagram.com/kwalityandklarity/" target="_blank" rel="noopener noreferrer" title="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.25 5.25 0 0 1 21.5 7.25v8.5A5.25 5.25 0 0 1 16.25 21h-8.5A5.25 5.25 0 0 1 2.5 15.75v-8.5A5.25 5.25 0 0 1 7.75 2zm0 1.5A3.75 3.75 0 0 0 4 7.25v8.5A3.75 3.75 0 0 0 7.75 19.5h8.5A3.75 3.75 0 0 0 20 15.75v-8.5A3.75 3.75 0 0 0 16.25 3.5h-8.5zm9.25 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg>
+            </a>
+            <a href="https://x.com/KwalityKlarity" target="_blank" rel="noopener noreferrer" title="X">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+        <div>© 2025 Kwality & Klarity. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // Store the HTML for each page in JavaScript variables
+        const pages = {
+            'home': ``,
+            'blog': `
+                <div class="flex flex-col items-center text-center w-full">
+                    <h2 class="text-4xl font-bold mb-8 text-center">THE BLOG</h2>
+                    <div id="filter-container" class="flex flex-wrap justify-center space-x-4 sm:space-x-8 mb-8 text-2xl">
+                        <button class="filter-btn border-b-2 border-black pb-1 focus:outline-none" data-filter="all">All</button>
+                        <button class="filter-btn hover:underline focus:outline-none" data-filter="fashion">Fashion</button>
+                        <button class="filter-btn hover:underline focus:outline-none" data-filter="music">Music</button>
+                        <button class="filter-btn hover:underline focus:outline-none" data-filter="events">Events</button>
+                        <button class="filter-btn hover:underline focus:outline-none" data-filter="discourse">Discourse</button>
+                    </div>
+                    <!-- Updated blog posts container for a two-column grid on desktop -->
+                    <div id="blog-posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center w-full max-w-5xl mt-8">
+                        <!-- Blog posts will be injected here by filterPosts() -->
+                    </div>
+                </div>
+            `,
+            'podcast': `
+                <div class="flex flex-col items-center text-center">
+                    <h2 class="text-4xl font-bold mb-8">KULTURE KRONICLES</h2>
+                    <p class="text-lg mb-4 max-w-2xl">
+                        Explore a collection of short-form and long-form video content documenting and promoting young artists in music, fashion, and pop culture.
+                    </p>
+                    
+                    <!-- Short-form Videos (Shorts) - added loading="lazy" for performance -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 w-full max-w-6xl">
+                        <div class="relative w-full" style="padding-top: 177.7778%;">
+                            <iframe loading="lazy" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/0k64j1Spffg" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="relative w-full" style="padding-top: 177.7778%;">
+                            <iframe loading="lazy" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/E5-OfbZUc5E" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="relative w-full" style="padding-top: 177.7778%;">
+                            <iframe loading="lazy" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/5jKuBE1OrEQ" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="relative w-full" style="padding-top: 177.7778%;">
+                            <iframe loading="lazy" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/TNLaPAs9mmU" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="relative w-full" style="padding-top: 177.7778%;">
+                            <iframe loading="lazy" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/7L9spG_p_Tc" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- K&K Radio (Long-form Videos) - added loading="lazy" for performance -->
+                    <h3 class="text-3xl font-bold mt-16 mb-8 text-center">K&K Radio</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+                         <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/29eVgJtfRsI" 
+                                    title="Don’t Be A Creative Director" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">Don’t Be A Creative Director</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/jrJKnKSik6w" 
+                                    title="The Return" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">The Return</p>
+                        </div>
+                         <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/BVjdJjVUXAc" 
+                                    title="Give Yourself Time" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">Give Yourself Time</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/lFhhbx2xA1E" 
+                                    title="Creativity is Life" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">Creativity is Life</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/isszwKqkCM4" 
+                                    title="Fear Nothing" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">Fear Nothing</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/tsHLDkZhlvI" 
+                                    title="The Importance of Self-Belief" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">The Importance of Self-Belief</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="relative w-full" style="padding-top: 56.25%;">
+                                <iframe loading="lazy" 
+                                    class="absolute top-0 left-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/qtguifcfw5c" 
+                                    title="The Story" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <p class="mt-2 text-lg font-bold text-center">The Story</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'prospect-form': `
+                <div class="flex flex-col items-center w-full max-w-lg p-4">
+                    <h2 class="text-4xl font-bold mb-8 text-center">PROSPECT FORM</h2>
+                    <p class="text-lg mb-8 text-center">
+                        Ready to start a project? Fill out the form below and we'll get back to you!
+                    </p>
+                    <form class="w-full" action="https://buttondown.com/api/emails/embed-subscribe/kwality_klarity" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/kwality_klarity', 'popupwindow')" >
+                        <div class="mb-6 text-left">
+                            <label for="name" class="block text-2xl font-bold mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full p-2 border border-black rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-black">
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="email" class="block text-2xl font-bold mb-2">Email</label>
+                            <input type="email" name="email" id="email" class="w-full p-2 border border-black rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-black">
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="message" class="block text-2xl font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full p-2 border border-black rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+                        </div>
+                        <button type="submit" class="mx-auto block bg-black text-white px-8 py-4 text-2xl font-bold hover:bg-gray-800 transition-colors rounded-lg">
+                            SUBMIT
+                        </button>
+                    </form>
+                </div>
+            `,
+            'about': `
+                <div class="flex flex-col items-center text-center">
+                    <h2 class="text-4xl font-bold mb-8">ABOUT KWALITY & KLARITY</h2>
+                    <p class="text-lg mb-4 max-w-2xl">
+                        Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.
+                    </p>
+
+                    <!-- Newsletter Section with old design -->
+                    <div class="w-full max-w-lg mt-8 p-4 border-2 border-black rounded-lg shadow-[4px_4px_0_0_#000]">
+                        <h3 class="text-3xl font-bold mb-4">JOIN OUR NEWSLETTER</h3>
+                        <p class="text-lg mb-4">
+                            Stay updated with our latest posts and announcements.
+                        </p>
+                        <form action="https://buttondown.com/api/emails/embed-subscribe/kwality_klarity" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/kwality_klarity', 'popupwindow')" >
+                            <div class="mb-4 text-left">
+                                <label for="email-newsletter" class="block text-2xl font-bold mb-2">Email</label>
+                                <input type="email" name="email" id="email-newsletter" class="w-full p-2 border border-black rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-black">
+                            </div>
+                            <button type="submit" class="mx-auto block bg-black text-white px-8 py-4 text-2xl font-bold hover:bg-gray-800 transition-colors rounded-lg">
+                                SUBSCRIBE
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- FAQ Section -->
+                    <h3 class="text-3xl font-bold mt-8 mb-4">FAQ</h3>
+                    <div class="space-y-4 text-left w-full max-w-2xl">
+                        <div class="border p-4 rounded-lg border-2 border-black shadow-[4px_4px_0_0_#000]">
+                            <h4 class="font-bold text-2xl">What kind of content do you produce?</h4>
+                            <p class="text-lg">We produce a wide range of content, including interviews, articles, and podcasts, all centered around South African music, fashion, and pop culture.</p>
+                        </div>
+                        <div class="border p-4 rounded-lg border-2 border-black shadow-[4px_4px_0_0_#000]">
+                            <h4 class="font-bold text-2xl">How can I be featured?</h4>
+                            <p class="text-lg">We're always looking for new talent! You can submit your work through our Prospect Form.</p>
+                        </div>
+                        <div class="border p-4 rounded-lg border-2 border-black shadow-[4px_4px_0_0_#000]">
+                            <h4 class="font-bold text-2xl">Can I collaborate with Kwality & Klarity?</h4>
+                            <p class="text-lg">Yes, we are open to collaborations. Please reach out to us via our email info@kwalityandklarity.com with your proposal.</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'full-post': ``, // This is now a dynamically generated page and no longer needs a static template
+        };
+
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Finding Your Voice: An Interview with A-REECE",
+                date: "2024-05-15",
+                category: "music",
+                imageUrl: "https://i.ibb.co/3s7sKqT/IMG-9499.png",
+                fullContent: `
+                <p><strong>A-REECE</strong> is one of South Africa’s most iconic rappers, known for his unique blend of lyrical introspection and raw honesty. His music resonates deeply with fans, making him a powerful voice in the industry.</p>
+                <p>In our exclusive interview, A-REECE opens up about his creative process, the challenges of staying true to his artistic vision, and the importance of authenticity in a fast-paced world. He shares how his personal journey and experiences have shaped his sound, and he offers advice to young artists who are just starting out.</p>
+                <p>We discuss the evolving landscape of South African hip-hop, the rise of independent artists, and how social media has changed the game. This conversation is a deep dive into the mind of a creative genius who is not only a rapper but also a storyteller, a poet, and an innovator.</p>
+                `,
+                snippet: "A-REECE opens up about his creative process, lyrical honesty, and the importance of authenticity in a fast-paced world. This is a must-read for any aspiring artist.",
+            },
+            {
+                id: 2,
+                title: "Durban's Fashion Scene: A Look at the Future",
+                date: "2024-06-20",
+                category: "fashion",
+                imageUrl: "https://i.ibb.co/fvwk0dF/IMG-9502.png",
+                fullContent: `
+                <p>Durban is quickly becoming a hub for emerging fashion talent, with a vibrant scene that’s challenging traditional styles and pushing boundaries. From sustainable streetwear to avant-garde designs, the city is a melting pot of creativity.</p>
+                <p>We spoke to several local designers who are at the forefront of this movement. They shared their inspirations, the challenges of a competitive industry, and their vision for the future of fashion in South Africa. Their work is a testament to the city’s unique cultural heritage, blending modern aesthetics with traditional elements.</p>
+                <p>With a focus on community and collaboration, these designers are not just creating clothes; they're building a new ecosystem for fashion. We explore how their collections reflect the social and political climate, and why their work is so important for the next generation of creatives.</p>
+                `,
+                snippet: "Durban's fashion scene is buzzing with a new wave of designers pushing boundaries and redefining style. We take a closer look at the future of fashion in the city.",
+            },
+            {
+                id: 3,
+                title: "The K&K Radio Live Experience",
+                date: "2024-07-01",
+                category: "events",
+                imageUrl: "https://i.ibb.co/jGGxW1B/IMG-9512.png",
+                fullContent: `
+                <p>The first-ever K&K Radio Live event was a huge success, bringing together artists, creators, and fans for a night of music, conversation, and community. The energy was electric, with live performances, engaging panel discussions, and a palpable sense of shared purpose.</p>
+                <p>We recap the highlights of the night, from the unforgettable live performances to the insightful conversations about the future of the creative industry. We caught up with some of the artists and attendees to get their thoughts on the event and what they’re excited about next.</p>
+                `,
+                snippet: "Recapping the electrifying first-ever K&K Radio Live event, a night of music, conversation, and community for artists and fans alike.",
+            },
+            {
+                id: 4,
+                title: "Discourse: The Power of Self-Belief",
+                date: "2024-07-10",
+                category: "discourse",
+                imageUrl: "https://i.ibb.co/FVTp31X/IMG-9514.png",
+                fullContent: `
+                <p>In a world that often tells us to doubt ourselves, the power of self-belief is more important than ever. We explore how artists and creatives can cultivate a strong sense of self-worth and use it as a foundation for their work. We dive into the psychology of self-doubt, the importance of surrounding yourself with a supportive community, and practical strategies for building confidence.</p>
+                <p>We share stories of artists who have overcome immense challenges by trusting their own instincts, and we offer actionable advice for anyone struggling with imposter syndrome. This is a conversation about resilience, growth, and the transformative power of believing in yourself.</p>
+                `,
+                snippet: "Exploring the power of self-belief and how artists can cultivate a strong sense of self-worth to overcome challenges and create their best work.",
+            },
+            {
+                id: 5,
+                title: "Joburg's Underground Hip-Hop Scene",
+                date: "2024-07-20",
+                category: "music",
+                imageUrl: "https://i.ibb.co/v4b23qD/IMG-9515.png",
+                fullContent: `
+                <p>Johannesburg's underground hip-hop scene is a hidden gem, brimming with raw talent and innovation. We delve into the cyphers, the open mics, and the independent labels that are shaping the future of the genre.</p>
+                <p>We spoke to a collective of underground artists who are carving out their own paths, rejecting commercial pressures in favor of artistic integrity. They shared their stories, their struggles, and their dreams for a scene that is both authentic and supportive. This is a look at the real heart of hip-hop, where passion and community reign supreme.</p>
+                `,
+                snippet: "A deep dive into the hidden gems of Johannesburg's underground hip-hop scene and the artists who are shaping its future.",
+            },
+            {
+                id: 6,
+                title: "The State of SA Fashion: From Local to Global",
+                date: "2024-07-28",
+                category: "fashion",
+                imageUrl: "https://i.ibb.co/sK6k9y0/IMG-9516.png",
+                fullContent: `
+                <p>South African fashion is no longer a local secret. We trace the journey of local designers who are making a name for themselves on the global stage, from international fashion weeks to collaborations with major brands.</p>
+                <p>We analyze the trends, the challenges, and the opportunities that lie ahead for the industry. This is a look at how South African fashion is maintaining its unique identity while also adapting to a global market. We explore the role of social media, the importance of sustainability, and what's next for a scene that's poised for worldwide recognition.</p>
+                `,
+                snippet: "From local runways to global fashion weeks, we explore how South African designers are making their mark on the international stage.",
+            },
+            {
+                id: 7,
+                title: "The K&K Radio x Puma Experience",
+                date: "2024-08-01",
+                category: "events",
+                imageUrl: "https://i.ibb.co/Jj74RR2Z/IMG-9717.png",
+                fullContent: `
+                <p>We teamed up with Puma for an exclusive K&K Radio event, bringing together some of the most influential voices in South African fashion and music. The night was a celebration of creativity and collaboration, with live DJ sets, interactive art installations, and conversations about the future of pop culture.</p>
+                <p>This was a powerful example of how brands can collaborate with local platforms to create authentic, community-driven experiences. We recap the highlights of the night and what made this event a standout moment for everyone involved. This is a look at the future of brand partnerships and the power of creative synergy.</p>
+                `,
+                snippet: "Recapping the exclusive K&K Radio x Puma event, a night of music, fashion, and collaboration that celebrated creativity and community.",
+            }
+        ];
+        
+        let currentFilter = 'all';
+
+        // Helper function to fetch posts from a JSON file and merge with existing ones.
+        // It fetches a JSON file, maps the data to the correct format, and merges it with the local posts.
+        // The combined list is then sorted by date in descending order.
+        async function loadCmsPostsAndMerge(existingPosts) {
+            try {
+                const res = await fetch('/posts.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('Failed to fetch /posts.json');
+                const cms = await res.json();
+                const cmsAsCards = cms.map(p => ({
+                    title: p.title,
+                    date: p.date,
+                    category: (p.category || '').toLowerCase(),
+                    imageUrl: p.cover || '',
+                    snippet: p.excerpt || '', // added snippet for card display
+                    fullContent: p.body || p.excerpt || '', // try to get full body if available
+                    url: p.url
+                }));
+                return [...cmsAsCards, ...existingPosts].sort(
+                    (a, b) => new Date(b.date) - new Date(a.date)
+                );
+            } catch (e) {
+                console.warn('CMS posts failed to load:', e);
+                return existingPosts;
+            }
+        }
+
+        // Function to render blog posts based on the filter
+        function renderBlogPosts(posts) {
+            const container = document.getElementById('blog-posts-container');
+            container.innerHTML = ''; // Clear previous content
+
+            const filteredPosts = posts.filter(post => {
+                if (currentFilter === 'all') {
+                    return true;
+                }
+                return post.category.toLowerCase() === currentFilter;
+            });
+            
+            // Gracefully handle the case where there are no posts to display
+            if (!filteredPosts.length) {
+                container.innerHTML = `<p class="text-lg text-center w-full">No posts yet in this category.</p>`;
+                return;
+            }
+
+            // Placeholder image for posts that don't have a cover
+            const placeholderImageUrl = 'https://placehold.co/400x200/cccccc/333333?text=K%26K';
+
+            filteredPosts.forEach(post => {
+                const imageUrl = post.imageUrl || placeholderImageUrl;
+                const postCard = `
+                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl text-left hover:shadow-[8px_8px_0_0_#000] transition-shadow duration-300 cursor-pointer">
+                        <img src="${imageUrl}" alt="${post.title}" class="w-full h-auto mb-4 rounded-lg" loading="lazy">
+                        <!-- Guard against missing dates from CMS posts -->
+                        <p class="text-xs text-gray-500 mb-1">${post.date ? String(post.date).split('T')[0] : ''}</p>
+                        <h3 class="text-xl font-bold mb-2 uppercase">${post.title}</h3>
+                        <p class="text-base">${post.snippet}</p>
+                    </div>
+                `;
+                const postElement = document.createElement('div');
+                postElement.innerHTML = postCard;
+
+                // Click handler to check for a URL before showing the full post.
+                if (post.url) {
+                    postElement.addEventListener('click', () => window.location.href = post.url);
+                } else {
+                    postElement.addEventListener('click', () => showFullPost(post));
+                }
+
+                container.appendChild(postElement.firstChild);
+            });
+        }
+        
+        // Make filtering use the merged list (not the old blogPosts)
+        function filterPosts(filter) {
+            currentFilter = filter;
+            const buttons = document.querySelectorAll('#filter-container .filter-btn');
+            buttons.forEach(button => {
+                if (button.dataset.filter === filter) {
+                    button.classList.add('border-b-2', 'border-black', 'pb-1');
+                    button.classList.remove('hover:underline');
+                    button.setAttribute('aria-current', 'page'); // Indicate active filter for accessibility
+                } else {
+                    button.classList.remove('border-b-2', 'border-black', 'pb-1');
+                    button.classList.add('hover:underline');
+                    button.setAttribute('aria-current', 'false');
+                }
+            });
+            // use merged set
+            renderBlogPosts(window.__allPosts || blogPosts);
+        }
+
+        // Function to setup filter button listeners
+        function setupFilterListeners() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterPosts(button.dataset.filter);
+                });
+            });
+        }
+
+        // Function to show the full post content
+        function showFullPost(post) {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+                <div class="max-w-4xl mx-auto text-center p-4">
+                    <button onclick="showPage('blog')" class="mb-4 text-2xl font-bold hover:underline transition-colors">
+                        ← BACK TO BLOG
+                    </button>
+                    <h2 class="text-4xl font-bold mb-4 uppercase">${post.title}</h2>
+                    <p class="text-md text-gray-500 mb-8">${post.date ? String(post.date).split('T')[0] : ''} | ${post.category}</p>
+                    <img src="${post.imageUrl}" alt="${post.title}" class="w-full h-auto mb-8 rounded-lg border-2 border-black shadow-[4px_4px_0_0_#000]">
+                    <div class="text-lg text-left leading-relaxed">
+                        ${post.fullContent}
+                    </div>
+                </div>
+            `;
+            // Remove the 'homepage' and 'no-scroll' classes when viewing a blog post
+            document.body.classList.remove('homepage', 'no-scroll');
+            // Hide navigation menu on mobile after a link is clicked.
+            document.getElementById('main-nav').classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            // Scroll to the top of the page smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Main function to switch between pages
+        function showPage(pageId) {
+            const mainContent = document.getElementById('main-content');
+            // Make sure the nav is always visible when switching pages
+            document.getElementById('main-nav').classList.remove('hidden');
+
+            // Revert body classes for non-homepage views
+            document.body.classList.remove('homepage', 'no-scroll');
+            
+            if (pageId === 'home') {
+                // Restore homepage classes
+                document.body.classList.add('homepage', 'no-scroll');
+                mainContent.classList.add('hidden');
+            } else {
+                mainContent.classList.remove('hidden');
+                // Blog page now loads posts asynchronously
+                // Inject the HTML first, then fetch posts
+                if (pageId === 'blog') {
+                    (async () => {
+                        mainContent.innerHTML = pages['blog'];
+                        window.__allPosts = await loadCmsPostsAndMerge(blogPosts);
+                        setupFilterListeners();
+                        filterPosts('all'); // Renders + applies active styles using the merged list
+                    })();
+                } else if (pages[pageId]) {
+                    mainContent.innerHTML = pages[pageId];
+                    if (pageId === 'prospect-form' || pageId === 'about') {
+                        document.body.classList.add('flex-center');
+                    } else {
+                        document.body.classList.remove('flex-center');
+                    }
+                } else {
+                    mainContent.innerHTML = 'Page not found!';
+                }
+            }
+        }
+
+        // Function to handle hash-based routing
+        function routeFromHash() {
+            const page = (location.hash.replace('#/','') || 'home');
+            showPage(page);
+        }
+        
+        // Initial page load and hash change listener
+        window.addEventListener('hashchange', routeFromHash);
+        document.addEventListener('DOMContentLoaded', routeFromHash);
+    </script>
+</body>
+</html>
