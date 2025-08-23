@@ -196,18 +196,22 @@
             }
         }
 
-        .message-box {
+        /* New styles for the message box */
+        #kw-msg-container {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-family: 'VT323', monospace;
-            z-index: 101;
-            opacity: 0;
+            right: 16px;
+            bottom: 16px;
+            z-index: 9999;
+        }
+
+        #kw-msg-container > div {
+            background: rgba(0,0,0,0.75);
+            color: #fff;
+            padding: 8px 12px;
+            margin-top: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
     </style>
@@ -265,9 +269,6 @@
         </div>
     </div>
 
-    <!-- Message Box for copy-to-clipboard feedback -->
-    <div id="message-box" class="message-box hidden"></div>
-
     <!-- Footer with social media icons from user's provided code -->
     <footer class="mt-16 text-black home-page-mobile-footer">
         <div class="footer-email">
@@ -300,6 +301,73 @@
 
         const whiteLogoUrl = 'https://i.ibb.co/Jj74RR2Z/IMG-9717.png';
         const blackLogoUrl = 'https://i.ibb.co/mKbxmzd/K-K-black.webp';
+        
+        // === START: Share / escaping helpers (added) ===
+        function escapeHtml(str = '') {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeAttr(str = '') {
+            return escapeHtml(str).replace(/\n/g, ' ');
+        }
+
+        function copyToClipboard(text) {
+            if (!text) return Promise.resolve();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            }
+            // Fallback
+            return new Promise((resolve, reject) => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                // Prevent mobile zoom
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    resolve();
+                } catch (err) {
+                    document.body.removeChild(ta);
+                    reject(err);
+                }
+            });
+        }
+
+        function showMessage(msg, timeout = 3000) {
+            // Lightweight, non-intrusive message UI. If the page has an existing toast/snackbar system, prefer that.
+            let container = document.getElementById('kw-msg-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'kw-msg-container';
+                container.style.position = 'fixed';
+                container.style.right = '16px';
+                container.style.bottom = '16px';
+                container.style.zIndex = '9999';
+                document.body.appendChild(container);
+            }
+            const el = document.createElement('div');
+            el.textContent = msg;
+            el.style.background = 'rgba(0,0,0,0.75)';
+            el.style.color = '#fff';
+            el.style.padding = '8px 12px';
+            el.style.marginTop = '8px';
+            el.style.borderRadius = '6px';
+            el.style.fontSize = '14px';
+            container.appendChild(el);
+            setTimeout(() => {
+                el.style.opacity = '0';
+                setTimeout(() => container.removeChild(el), 300);
+            }, timeout);
+        }
+        // === END: Share / escaping helpers (added) ===
 
         // Store the HTML for each page in JavaScript variables
         const pages = {
@@ -620,10 +688,10 @@
                 const imageUrl = post.imageUrl || placeholderImageUrl;
                 const postCard = `
                     <!-- The new hover effect applies a larger, but still sharp, drop shadow -->
-                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] cursor-pointer rounded-lg" data-slug="${post.slug}">
+                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] cursor-pointer rounded-lg" data-slug="${escapeAttr(post.slug)}">
                         <div class="relative w-full">
                             <!-- Removed rounded-lg from the image to keep it square -->
-                            <img src="${imageUrl}" alt="${post.title}" class="w-full h-auto mb-4" loading="lazy">
+                            <img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(post.title)}" class="w-full h-auto mb-4" loading="lazy">
                             <!-- Adjusted bottom position to move the logo up -->
                             <div class="absolute bottom-7 right-2 w-12 h-12">
                                 <img src="${whiteLogoUrl}" alt="Kwality & Klarity Logo" class="w-full h-full">
@@ -631,8 +699,8 @@
                         </div>
                         <!-- Guard against missing dates from CMS posts -->
                         <p class="text-xs text-gray-500 mb-1">${post.date ? String(post.date).split('T')[0] : ''}</p>
-                        <h3 class="text-xl font-bold mb-2 uppercase">${post.title}</h3>
-                        <p class="text-base">${post.snippet}</p>
+                        <h3 class="text-xl font-bold mb-2 uppercase">${escapeHtml(post.title)}</h3>
+                        <p class="text-base">${escapeHtml(post.snippet)}</p>
                     </div>
                 `;
                 
@@ -681,66 +749,6 @@
             }
         }
         
-        // Function to show a temporary message box
-        function showMessage(message) {
-            const messageBox = document.getElementById('message-box');
-            messageBox.textContent = message;
-            messageBox.classList.remove('hidden');
-            setTimeout(() => {
-                messageBox.classList.add('hidden');
-            }, 3000);
-        }
-        
-        // Updated function to handle sharing a blog post
-        function sharePost(post) {
-            // Build the URL, which is correct for hash-based routing
-            const shareUrl = window.location.origin + window.location.pathname + '#/blog/' + post.slug;
-            
-            // Check if Web Share API is available on the device
-            if (navigator.share) {
-                navigator.share({
-                    title: post.title,
-                    text: post.snippet,
-                    url: shareUrl,
-                }).catch(error => {
-                    // If sharing fails for any reason (e.g., user cancels, or permission denied)
-                    console.error('Sharing failed:', error);
-                    showMessage('Sharing failed. Copying link instead.');
-                    copyToClipboard(shareUrl);
-                });
-            } else {
-                // Fallback for browsers that don't support the Web Share API
-                copyToClipboard(shareUrl);
-            }
-        }
-
-        // New helper function to copy to clipboard
-        function copyToClipboard(text) {
-            if (navigator.clipboard && window.isSecureContext) {
-                // Use the modern clipboard API, which is more reliable
-                navigator.clipboard.writeText(text).then(() => {
-                    showMessage('Link copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy to clipboard:', err);
-                    showMessage('Failed to copy link. Please try manually.');
-                });
-            } else {
-                // Fallback for insecure contexts or older browsers
-                const tempInput = document.createElement('input');
-                tempInput.value = text;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                try {
-                    document.execCommand('copy');
-                    showMessage('Link copied to clipboard!');
-                } catch (err) {
-                    console.error('Fallback: Could not copy text', err);
-                    showMessage('Could not copy link. Please manually copy the URL from the address bar.');
-                }
-                document.body.removeChild(tempInput);
-            }
-        }
-
         // Function to show the full post content
         function showFullPost(post) {
             const mainContent = document.getElementById('main-content');
@@ -752,8 +760,7 @@
                 mainContent.innerHTML = `
                     <div class="max-w-4xl mx-auto text-center p-4">
                         <div class="flex justify-start items-center mb-4">
-                            <!-- This button now uses the more reliable showPage('blog') -->
-                            <button onclick="showPage('blog')" class="text-2xl font-bold hover:underline transition-colors">
+                            <button id="back-to-blog" class="text-2xl font-bold hover:underline transition-colors">
                                 ← BACK TO BLOG
                             </button>
                         </div>
@@ -763,33 +770,51 @@
                 `;
                 document.getElementById('main-nav').classList.add('hidden');
                 mainContent.classList.remove('hidden');
+                document.getElementById('back-to-blog').addEventListener('click', () => showPage('blog'));
                 return;
             }
 
+            // === START: render full post (replaces fragile inline onclick approach) ===
             mainContent.innerHTML = `
                 <div class="max-w-4xl mx-auto text-center p-4">
                     <div class="flex justify-between items-center mb-4">
-                        <button onclick="showPage('blog')" class="text-2xl font-bold hover:underline transition-colors">
+                        <button id="back-to-blog" class="text-2xl font-bold hover:underline transition-colors">
                             ← BACK TO BLOG
                         </button>
-                        <button onclick="sharePost({title: '${post.title}', snippet: '${post.snippet}', slug: '${post.slug}'})" class="share-icon-btn">
+                    
+                        <!-- Share button has an ID; do NOT use inline onclick with interpolated post fields -->
+                        <button id="share-btn" class="share-icon-btn" aria-label="Share post">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                         </button>
                     </div>
-                    <h2 class="text-4xl font-bold mb-4 uppercase">${post.title}</h2>
-                    <p class="text-md text-gray-500 mb-8">${post.date ? String(post.date).split('T')[0] : ''} | ${post.category}</p>
+                
+                    <h2 class="text-4xl font-bold mb-4 uppercase">${escapeHtml(post.title)}</h2>
+                    <p class="text-md text-gray-500 mb-8">${post.date ? String(post.date).split('T')[0] : ''} | ${escapeHtml(post.category || '')}</p>
+                
                     <div class="relative w-full">
-                        <img src="${post.imageUrl}" alt="${post.title}" class="full-post-image">
-                        <!-- New: Logo on the main image -->
+                        <img src="${post.imageUrl || ''}" alt="${escapeAttr(post.title)}" class="full-post-image">
                         <div class="absolute bottom-4 right-4 w-12 h-12">
-                            <img src="${whiteLogoUrl}" alt="Kwality & Klarity Logo" class="w-full h-full">
+                            <img src="${whiteLogoUrl || ''}" alt="Logo" class="w-full h-full">
                         </div>
                     </div>
+                
                     <div class="text-lg text-left leading-relaxed font-helvetica">
-                        ${post.fullContent}
+                        ${post.fullContent || ''}
                     </div>
                 </div>
             `;
+            
+            // wire up nav and share button handlers (closure captures `post`)
+            document.getElementById('back-to-blog').addEventListener('click', () => showPage('blog'));
+            
+            const shareBtn = document.getElementById('share-btn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    sharePost(post); // pass the post object directly
+                });
+            }
+            // === END: render full post ===
+
             document.getElementById('main-nav').classList.add('hidden');
             mainContent.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -910,6 +935,51 @@
             const page = hash.slice(2);
             showPage(page);
         }
+
+        // === START: robust sharePost implementation (added/replaced) ===
+        function sharePost(post) {
+            if (!post || !post.slug) {
+                console.warn('sharePost: missing post or slug', post);
+                return;
+            }
+        
+            const shareUrl = (window.location.origin || window.location.protocol + '//' + window.location.host)
+                + window.location.pathname.replace(/\/$/, '') + '#/blog/' + encodeURIComponent(post.slug);
+        
+            // If Web Share API is supported and we're in a secure context, use it.
+            if (navigator.share) {
+                try {
+                    navigator.share({
+                        title: post.title || document.title,
+                        text: post.snippet || '',
+                        url: shareUrl
+                    }).then(() => {
+                        // Shared successfully (user may have cancelled — that's fine)
+                    }).catch(err => {
+                        console.warn('navigator.share failed or cancelled:', err);
+                        // Fallback to copy to clipboard
+                        copyToClipboard(shareUrl).then(() => {
+                            showMessage('Share sheet unavailable — link copied to clipboard.');
+                        }).catch(() => {
+                            showMessage('Could not open share sheet or copy link. See console for details.');
+                        });
+                    });
+                    return;
+                } catch (err) {
+                    // Some platforms throw sync exceptions — fallback to copy
+                    console.warn('navigator.share threw:', err);
+                }
+            }
+        
+            // Fallback: copy the link and notify user
+            copyToClipboard(shareUrl).then(() => {
+                showMessage('Share sheet not available here — link copied to clipboard.');
+            }).catch(err => {
+                console.warn('copyToClipboard failed:', err);
+                showMessage('Could not copy link to clipboard. Please copy it manually: ' + shareUrl);
+            });
+        }
+        // === END: robust sharePost implementation ===
         
         // Listener for form submission to handle modal closing
         document.querySelector('#newsletter-modal form').addEventListener('submit', () => {
