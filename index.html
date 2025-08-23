@@ -619,8 +619,8 @@
             filteredPosts.forEach(post => {
                 const imageUrl = post.imageUrl || placeholderImageUrl;
                 const postCard = `
-                    <!-- Updated classes for the old hover effects -->
-                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl cursor-pointer rounded-lg" data-slug="${post.slug}">
+                    <!-- The new hover effect applies a larger, but still sharp, drop shadow -->
+                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] cursor-pointer rounded-lg" data-slug="${post.slug}">
                         <div class="relative w-full">
                             <!-- Removed rounded-lg from the image to keep it square -->
                             <img src="${imageUrl}" alt="${post.title}" class="w-full h-auto mb-4" loading="lazy">
@@ -690,48 +690,54 @@
                 messageBox.classList.add('hidden');
             }, 3000);
         }
-
-        // Function to handle sharing a blog post
+        
+        // Updated function to handle sharing a blog post
         function sharePost(post) {
+            // Build the URL, which is correct for hash-based routing
             const shareUrl = window.location.origin + window.location.pathname + '#/blog/' + post.slug;
             
             // Check if Web Share API is available on the device
             if (navigator.share) {
-                try {
-                    navigator.share({
-                        title: post.title,
-                        text: post.snippet,
-                        url: shareUrl,
-                    });
-                } catch (error) {
+                navigator.share({
+                    title: post.title,
+                    text: post.snippet,
+                    url: shareUrl,
+                }).catch(error => {
+                    // If sharing fails for any reason (e.g., user cancels, or permission denied)
                     console.error('Sharing failed:', error);
-                    showMessage('Sharing failed. Please try again or copy the link.');
-                }
+                    showMessage('Sharing failed. Copying link instead.');
+                    copyToClipboard(shareUrl);
+                });
             } else {
                 // Fallback for browsers that don't support the Web Share API
-                if (navigator.clipboard) {
-                    // Use the modern clipboard API
-                    navigator.clipboard.writeText(shareUrl).then(() => {
-                        showMessage('Link copied to clipboard!');
-                    }).catch(err => {
-                        console.error('Failed to copy to clipboard:', err);
-                        showMessage('Failed to copy link. Please try manually.');
-                    });
-                } else {
-                    // Fallback for older browsers
-                    const tempInput = document.createElement('input');
-                    tempInput.value = shareUrl;
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    try {
-                        document.execCommand('copy');
-                        showMessage('Link copied to clipboard!');
-                    } catch (err) {
-                        console.error('Fallback: Could not copy text', err);
-                        showMessage('Could not copy link. Please manually copy the URL from the address bar.');
-                    }
-                    document.body.removeChild(tempInput);
+                copyToClipboard(shareUrl);
+            }
+        }
+
+        // New helper function to copy to clipboard
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                // Use the modern clipboard API, which is more reliable
+                navigator.clipboard.writeText(text).then(() => {
+                    showMessage('Link copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy to clipboard:', err);
+                    showMessage('Failed to copy link. Please try manually.');
+                });
+            } else {
+                // Fallback for insecure contexts or older browsers
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showMessage('Link copied to clipboard!');
+                } catch (err) {
+                    console.error('Fallback: Could not copy text', err);
+                    showMessage('Could not copy link. Please manually copy the URL from the address bar.');
                 }
+                document.body.removeChild(tempInput);
             }
         }
 
