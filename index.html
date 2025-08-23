@@ -12,7 +12,7 @@
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:title" content="Kwality & Klarity">
-    <meta property="og:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.">
+    <meta property="og:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion, and pop culture.">
     <meta property="og:image" content="https://i.ibb.co/Fqd8fPfS/k-k-png.png"> <!-- Use your main logo image URL -->
     <meta property="og:url" content="https://www.kwalityandklarity.com/"> <!-- Replace with your actual domain -->
     <meta property="og:type" content="website">
@@ -21,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@KwalityKlarity"> <!-- Replace with your Twitter handle if applicable -->
     <meta name="twitter:title" content="Kwality & Klarity">
-    <meta name="twitter:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion or related pop cultures.">
+    <meta name="twitter:description" content="Kwality & Klarity is a South African online/digital publication platform founded by Tumisho Mathekgane. The platform focuses on documentation & promotion of young artist with music, fashion, and pop culture.">
     <meta name="twitter:image" content="https://i.ibb.co/Fqd8fPfS/k-k-png.png"> <!-- Use your main logo image URL -->
 
     <!-- Favicon -->
@@ -36,6 +36,11 @@
         body {
             font-family: 'VT323', monospace;
             min-height: 100vh;
+        }
+
+        /* New font for blog post content */
+        .font-helvetica {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
         /* Utility class to disable scrolling on the body */
@@ -110,6 +115,67 @@
                 justify-content: center;
             }
         }
+
+        /* New styles for the newsletter modal */
+        #newsletter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Dark semi-transparent overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Ensure it's on top of all other content */
+            opacity: 0; /* Initially hidden */
+            pointer-events: none; /* Initially non-interactive */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #newsletter-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #newsletter-modal .modal-content {
+            background-color: white;
+            color: black;
+            border: 2px solid black;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            box-shadow: 4px 4px 0 0 #000;
+            position: relative;
+        }
+        
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: black;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* Class to disable scrolling when the modal is active */
+        .no-scroll-modal-active {
+            overflow: hidden;
+        }
+
+        /* Share button icon style */
+        .share-icon-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen homepage-layout no-scroll homepage">
@@ -143,6 +209,26 @@
     <!-- Main content area where pages will be displayed -->
     <div id="main-content" class="flex-grow p-8 sm:p-16 flex justify-center hidden">
         <!-- Content will be injected here by JavaScript -->
+    </div>
+
+    <!-- Newsletter Modal (initially hidden) -->
+    <div id="newsletter-modal" class="hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeNewsletterModal()">X</button>
+            <h3 class="text-3xl font-bold mb-4">JOIN OUR NEWSLETTER</h3>
+            <p class="text-lg mb-4">
+                Enter your email to continue reading and get our latest updates.
+            </p>
+            <form action="https://buttondown.com/api/emails/embed-subscribe/kwality_klarity" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/kwality_klarity', 'popupwindow')" >
+                <div class="mb-4 text-left">
+                    <label for="email-newsletter" class="block text-2xl font-bold mb-2">Email</label>
+                    <input type="email" name="email" id="email-newsletter" class="w-full p-2 border border-black rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-black">
+                </div>
+                <button type="submit" class="mx-auto block bg-black text-white px-8 py-4 text-2xl font-bold hover:bg-gray-800 transition-colors rounded-lg">
+                    SUBSCRIBE
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Footer with social media icons from user's provided code -->
@@ -441,6 +527,7 @@
         ];
         
         let currentFilter = 'all';
+        let newsletterShown = false; // New flag to track if the newsletter has been shown
 
         // Helper function to fetch posts from a JSON file and merge with existing ones.
         // It fetches a JSON file, maps the data to the correct format, and merges it with the local posts.
@@ -544,15 +631,46 @@
             // use merged set
             renderBlogPosts(window.__allPosts || blogPosts);
         }
-
-        // Function to setup filter button listeners
+        
+        // New function to set up event listeners for the filter buttons
         function setupFilterListeners() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    filterPosts(button.dataset.filter);
+            const filterContainer = document.getElementById('filter-container');
+            if (filterContainer) {
+                filterContainer.addEventListener('click', (event) => {
+                    const button = event.target.closest('.filter-btn');
+                    if (button) {
+                        filterPosts(button.dataset.filter);
+                    }
                 });
-            });
+            }
+        }
+        
+        // Function to handle sharing a blog post
+        function sharePost(post) {
+            const shareUrl = window.location.origin + window.location.pathname + '#/blog/' + encodeURIComponent(post.title.toLowerCase().replace(/ /g, '-'));
+            if (navigator.share) {
+                navigator.share({
+                    title: post.title,
+                    text: post.snippet,
+                    url: shareUrl,
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                // Fallback for browsers that don't support the Web Share API
+                const message = `Check out this post: ${post.title}\n\n${shareUrl}`;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(message).then(() => {
+                        showPopup('Link copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Could not copy text: ', err);
+                        showPopup('Could not copy link. Please copy it manually.');
+                    });
+                } else {
+                    // Less ideal fallback for old browsers, but still works
+                    prompt('Copy this link to share:', message);
+                }
+            }
         }
 
         // Function to show the full post content
@@ -565,9 +683,14 @@
 
             mainContent.innerHTML = `
                 <div class="max-w-4xl mx-auto text-center p-4">
-                    <button onclick="showPage('blog')" class="mb-4 text-2xl font-bold hover:underline transition-colors">
-                        ← BACK TO BLOG
-                    </button>
+                    <div class="flex justify-between items-center mb-4">
+                        <button onclick="showPage('blog')" class="text-2xl font-bold hover:underline transition-colors">
+                            ← BACK TO BLOG
+                        </button>
+                        <button onclick="sharePost({title: '${post.title}', snippet: '${post.snippet}', url: window.location.href})" class="share-icon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
+                    </div>
                     <h2 class="text-4xl font-bold mb-4 uppercase">${post.title}</h2>
                     <p class="text-md text-gray-500 mb-8">${post.date ? String(post.date).split('T')[0] : ''} | ${post.category}</p>
                     <div class="relative w-full">
@@ -576,7 +699,7 @@
                             <img src="${whiteLogoUrl}" alt="Kwality & Klarity Logo" class="w-full h-full">
                         </div>
                     </div>
-                    <div class="text-lg text-left leading-relaxed">
+                    <div class="text-lg text-left leading-relaxed font-helvetica">
                         ${post.fullContent}
                     </div>
                 </div>
@@ -585,12 +708,52 @@
             mainContent.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        
+        // Function to handle showing the newsletter modal
+        function showNewsletterModal() {
+            const modal = document.getElementById('newsletter-modal');
+            modal.classList.add('show');
+            document.body.classList.add('no-scroll-modal-active');
+            // Set flag in sessionStorage so it doesn't show again this session
+            sessionStorage.setItem('newsletter_shown', 'true');
+        }
 
+        // New function to close the modal and re-enable scrolling
+        function closeNewsletterModal() {
+            const modal = document.getElementById('newsletter-modal');
+            modal.classList.remove('show');
+            document.body.classList.remove('no-scroll-modal-active');
+            window.removeEventListener('scroll', checkBlogScrollPosition);
+        }
+
+        // New function to check scroll position and show modal specifically on the blog page
+        function checkBlogScrollPosition() {
+            // Check if on the blog page and if the modal has not been shown for the blog session
+            if (window.location.hash.startsWith('#/blog') && !sessionStorage.getItem('newsletter_shown')) {
+                const postsContainer = document.getElementById('blog-posts-container');
+                if (!postsContainer) return;
+
+                // Dynamically find the second row (third element on desktop grid)
+                const thirdPost = postsContainer.children[2];
+                if (thirdPost) {
+                    const scrollThreshold = thirdPost.offsetTop - (window.innerHeight / 2); // Trigger halfway up the second row
+                    if (window.scrollY > scrollThreshold) {
+                        showNewsletterModal();
+                        // Remove the scroll listener after the modal is shown once per session
+                        window.removeEventListener('scroll', checkBlogScrollPosition);
+                    }
+                }
+            }
+        }
+        
         // Main function to switch between pages
         function showPage(pageId) {
             const mainContent = document.getElementById('main-content');
             document.getElementById('main-nav').classList.remove('hidden');
-
+            
+            // Hide the newsletter modal and re-enable scrolling when changing pages
+            closeNewsletterModal();
+            
             // Remove homepage-only classes when switching pages
             document.body.classList.remove('homepage', 'no-scroll', 'homepage-layout');
 
@@ -608,6 +771,13 @@
                         window.__allPosts = await loadCmsPostsAndMerge(blogPosts);
                         setupFilterListeners();
                         filterPosts('all'); // Renders + applies active styles using the merged list
+                        
+                        // Wait for a brief moment to ensure posts are rendered, then attach listener
+                        setTimeout(() => {
+                           if (!sessionStorage.getItem('newsletter_shown')) {
+                               window.addEventListener('scroll', checkBlogScrollPosition);
+                           }
+                        }, 500); // Wait 500ms
                     })();
                 } else if (pages[pageId]) {
                     mainContent.innerHTML = pages[pageId];
@@ -636,9 +806,20 @@
             showPage(page);
         }
         
+        // Listener for form submission to handle modal closing
+        document.querySelector('#newsletter-modal form').addEventListener('submit', () => {
+             closeNewsletterModal();
+        });
+
         // Initial page load and hash change listener
         window.addEventListener('hashchange', routeFromHash);
-        document.addEventListener('DOMContentLoaded', routeFromHash);
+        document.addEventListener('DOMContentLoaded', () => {
+            routeFromHash();
+            // Show modal on first visit to the site, if not already seen this session.
+            if (!sessionStorage.getItem('newsletter_shown')) {
+                showNewsletterModal();
+            }
+        });
     </script>
 </body>
 </html>
