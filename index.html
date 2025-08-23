@@ -297,7 +297,7 @@
                         <button class="filter-btn hover:underline focus:outline-none" data-filter="discourse">Discourse</button>
                     </div>
                     <!-- Updated blog posts container for a two-column grid on desktop -->
-                    <div id="blog-posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center w-full max-w-5xl mt-8">
+                    <div id="blog-posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 text-center w-full max-w-5xl mt-8">
                         <!-- Blog posts will be injected here by filterPosts() -->
                     </div>
                 </div>
@@ -602,7 +602,7 @@
                 const imageUrl = post.imageUrl || placeholderImageUrl;
                 const postCard = `
                     <!-- Added rounded-lg class here to the card container -->
-                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left hover:shadow-[8px_8px_0_0_#000] transition-shadow duration-300 cursor-pointer rounded-lg" data-slug="${post.slug}">
+                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left hover:shadow-2xl transition-shadow duration-300 cursor-pointer rounded-lg" data-slug="${post.slug}">
                         <div class="relative w-full">
                             <!-- Removed rounded-lg from the image to keep it square -->
                             <img src="${imageUrl}" alt="${post.title}" class="w-full h-auto mb-4" loading="lazy">
@@ -624,6 +624,7 @@
                 const cardEl = wrapper.firstElementChild; // the actual <div class="blog-post-card">
                 
                 cardEl.addEventListener('click', () => {
+                    // Navigate to the post by setting the hash.
                     window.location.hash = `#/blog/${post.slug}`;
                 });
 
@@ -708,6 +709,7 @@
                 mainContent.innerHTML = `
                     <div class="max-w-4xl mx-auto text-center p-4">
                         <div class="flex justify-start items-center mb-4">
+                            <!-- This button now uses the more reliable showPage('blog') -->
                             <button onclick="showPage('blog')" class="text-2xl font-bold hover:underline transition-colors">
                                 ← BACK TO BLOG
                             </button>
@@ -799,22 +801,29 @@
             
             // Remove homepage-only classes when switching pages
             document.body.classList.remove('homepage', 'no-scroll', 'homepage-layout');
+            
+            // New logic: explicitly update the hash for all page navigations
+            if (pageId === 'home') {
+                 window.location.hash = '#/home';
+            } else {
+                 window.location.hash = `#/${pageId}`;
+            }
 
+            // Check for specific blog post route
+            const blogPostMatch = window.location.hash.match(/^#\/blog\/([^/]+)$/);
+            if (blogPostMatch) {
+                const slug = blogPostMatch[1];
+                const post = allPosts.find(p => p.slug === slug);
+                showFullPost(post);
+                return;
+            }
+            
             if (pageId === 'home') {
                 // Apply homepage-only classes
                 document.body.classList.add('homepage', 'no-scroll', 'homepage-layout');
                 mainContent.classList.add('hidden');
             } else {
                 mainContent.classList.remove('hidden');
-                
-                // Check for specific blog post route
-                const blogPostMatch = window.location.hash.match(/^#\/blog\/([^/]+)$/);
-                if (blogPostMatch) {
-                    const slug = blogPostMatch[1];
-                    const post = allPosts.find(p => p.slug === slug);
-                    showFullPost(post);
-                    return;
-                }
                 
                 // Blog page now loads posts asynchronously.
                 // Inject the HTML first, then fetch posts.
