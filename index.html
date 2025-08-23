@@ -195,6 +195,21 @@
                 width: 100%; /* Full width on smaller screens */
             }
         }
+
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-family: 'VT323', monospace;
+            z-index: 101;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen homepage-layout no-scroll homepage">
@@ -249,6 +264,9 @@
             </form>
         </div>
     </div>
+
+    <!-- Message Box for copy-to-clipboard feedback -->
+    <div id="message-box" class="message-box hidden"></div>
 
     <!-- Footer with social media icons from user's provided code -->
     <footer class="mt-16 text-black home-page-mobile-footer">
@@ -601,8 +619,8 @@
             filteredPosts.forEach(post => {
                 const imageUrl = post.imageUrl || placeholderImageUrl;
                 const postCard = `
-                    <!-- Added rounded-lg class here to the card container -->
-                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left hover:shadow-2xl transition-shadow duration-300 cursor-pointer rounded-lg" data-slug="${post.slug}">
+                    <!-- Updated classes for the old hover effects -->
+                    <div class="blog-post-card flex flex-col items-center p-4 border-2 border-black shadow-[4px_4px_0_0_#000] text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl cursor-pointer rounded-lg" data-slug="${post.slug}">
                         <div class="relative w-full">
                             <!-- Removed rounded-lg from the image to keep it square -->
                             <img src="${imageUrl}" alt="${post.title}" class="w-full h-auto mb-4" loading="lazy">
@@ -663,6 +681,16 @@
             }
         }
         
+        // Function to show a temporary message box
+        function showMessage(message) {
+            const messageBox = document.getElementById('message-box');
+            messageBox.textContent = message;
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+
         // Function to handle sharing a blog post
         function sharePost(post) {
             const shareUrl = window.location.origin + window.location.pathname + '#/blog/' + post.slug;
@@ -677,24 +705,33 @@
                     });
                 } catch (error) {
                     console.error('Sharing failed:', error);
-                    // Fallback to a simple alert or copy-to-clipboard if sharing fails.
-                    // For now, we'll just log the error.
+                    showMessage('Sharing failed. Please try again or copy the link.');
                 }
             } else {
                 // Fallback for browsers that don't support the Web Share API
-                // Create a temporary input element to copy the URL to the clipboard
-                const tempInput = document.createElement('input');
-                tempInput.value = shareUrl;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                try {
-                    document.execCommand('copy');
-                    alert('Link copied to clipboard!');
-                } catch (err) {
-                    console.error('Fallback: Could not copy text', err);
-                    alert('Could not copy link. Please manually copy the URL from the address bar.');
+                if (navigator.clipboard) {
+                    // Use the modern clipboard API
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        showMessage('Link copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy to clipboard:', err);
+                        showMessage('Failed to copy link. Please try manually.');
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const tempInput = document.createElement('input');
+                    tempInput.value = shareUrl;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    try {
+                        document.execCommand('copy');
+                        showMessage('Link copied to clipboard!');
+                    } catch (err) {
+                        console.error('Fallback: Could not copy text', err);
+                        showMessage('Could not copy link. Please manually copy the URL from the address bar.');
+                    }
+                    document.body.removeChild(tempInput);
                 }
-                document.body.removeChild(tempInput);
             }
         }
 
