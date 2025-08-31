@@ -33,17 +33,14 @@
     <style>
         /* Using a custom font for a retro/tech aesthetic */
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        /* New font for blog post content */
-        @import url('https://fonts.googleapis.com/css2?family=VCR+OSD+Mono&display=swap');
-        
         body {
             font-family: 'VT323', monospace;
             min-height: 100vh;
         }
 
         /* New font for blog post content */
-        .font-vcr {
-            font-family: 'VCR OSD Mono', monospace;
+        .font-helvetica {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
         /* Utility class to disable scrolling on the body */
@@ -805,7 +802,7 @@
                         </div>
                     </div>
                 
-                    <div class="text-lg text-left leading-relaxed font-vcr">
+                    <div class="text-lg text-left leading-relaxed font-helvetica">
                         ${post.fullContent || ''}
                     </div>
                 </div>
@@ -1010,3 +1007,10 @@
         document.addEventListener('DOMContentLoaded', async () => { // === CHANGE: Made this async ===
             await routeFromHash(); // === CHANGE: Await the full routing process ===
             // Show modal on first visit to the site, if not already seen this session.
+            if (!sessionStorage.getItem('newsletter_shown')) {
+                showNewsletterModal();
+            }
+        });
+    </script>
+</body>
+</html>
