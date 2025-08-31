@@ -1010,10 +1010,3 @@
         document.addEventListener('DOMContentLoaded', async () => { // === CHANGE: Made this async ===
             await routeFromHash(); // === CHANGE: Await the full routing process ===
             // Show modal on first visit to the site, if not already seen this session.
-            if (!sessionStorage.getItem('newsletter_shown')) {
-                showNewsletterModal();
-            }
-        });
-    </script>
-</body>
-</html>
